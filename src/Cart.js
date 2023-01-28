@@ -11,33 +11,56 @@ class Cart extends React.Component {
                     price: 45,
                     qty: 3,
                     title: "Watch",
-                    imgLink:""
+                    imgLink: ""
                 }, {
                     id: 2,
                     price: 4950,
                     qty: 2,
                     title: "Phone",
-                    imgLink:""
+                    imgLink: ""
                 }, {
                     id: 3,
                     price: 9945,
                     qty: 1,
                     title: "Wallet",
-                    imgLink:""
+                    imgLink: ""
                 },
 
             ]
         }
     }
-    
+
     onIncreaseQuantity = (product) => {
-        const {products} = this.state;
+        const { products } = this.state;
         const index = products.indexOf(product);
         products[index].qty += 1;
         this.setState({
-            products:products
+            products
         })
     }
+
+    onDecreaseQuantity = (product) => {
+        const { products } = this.state;
+        const index = products.indexOf(product);
+
+        if (products[index].qty - 1 >= 0) {
+            products[index].qty -= 1;
+            this.setState({
+                products
+            })
+        }
+    }
+
+    deleteProduct = (product) => {
+        const {products} = this.state;
+        const index = products.indexOf(product);
+
+        products.splice(index,1);
+        this.setState({
+            products
+        })
+    }
+
     render() {
         const { products } = this.state;
         return (
@@ -48,6 +71,8 @@ class Cart extends React.Component {
                             product={item}
                             key={item.id}
                             onIncreaseQuantity={this.onIncreaseQuantity}
+                            onDecreaseQuantity={this.onDecreaseQuantity}
+                            deleteProduct={this.deleteProduct}
                         />);
                     })
                 }
