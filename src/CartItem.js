@@ -1,6 +1,7 @@
 import React from "react";
 
-class CartItem extends React.Component {
+// class CartItem extends React.Component 
+const CartItem = (props) => {
 
     // increaseQuantity = () => {
     // console.log(this.state.qty+1);
@@ -16,43 +17,43 @@ class CartItem extends React.Component {
     //     })
     // }
 
-    render() {
-        const { price, title, qty } = this.props.product;
-        const { product, deleteProduct, onDecreaseQuantity, onIncreaseQuantity } = this.props;
-        return (
-            <div className="cart-item">
-                <div className="left-block">
-                    <img style={styles.image} alt="" />
-                </div>
-                <div className="right-block">
-                    <div style={{ fontSize: 25 }}>{title}</div>
-                    <div style={{ color: '#777' }}>Rs {price}</div>
-                    <div style={{ color: '#777' }}>Qty: {qty}</div>
-                    <div className="cart-item-actions">
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/9068/9068645.png"
-                            alt="increase"
-                            className="action-icons"
-                            onClick={() => { onIncreaseQuantity(product) }}
-                        // onClick={() => { this.setState({ qty: qty + 1 }) }}
-                        />
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/9068/9068752.png"
-                            alt="decrease"
-                            className="action-icons"
-                            onClick={() => { onDecreaseQuantity(product) }}
-                        />
-                        <img
-                            src="https://cdn-icons-png.flaticon.com/512/3178/3178290.png"
-                            alt="delete"
-                            className="action-icons"
-                            onClick={() => { deleteProduct(product) }}
-                        />
-                    </div>
+    // render() {
+    const { price, title, qty } = props.product;
+    const { product, deleteProduct, onDecreaseQuantity, onIncreaseQuantity } = props;
+    return (
+        <div className="cart-item">
+            <div className="left-block">
+                <img style={styles.image} alt="" />
+            </div>
+            <div className="right-block">
+                <div style={{ fontSize: 25 }}>{title}</div>
+                <div style={{ color: '#777' }}>Rs {price}</div>
+                <div style={{ color: '#777' }}>Qty: {qty}</div>
+                <div className="cart-item-actions">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/9068/9068645.png"
+                        alt="increase"
+                        className="action-icons"
+                        onClick={() => { onIncreaseQuantity(product) }}
+                    // onClick={() => { this.setState({ qty: qty + 1 }) }}
+                    />
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/9068/9068752.png"
+                        alt="decrease"
+                        className="action-icons"
+                        onClick={() => { onDecreaseQuantity(product) }}
+                    />
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/512/3178/3178290.png"
+                        alt="delete"
+                        className="action-icons"
+                        onClick={() => { deleteProduct(product) }}
+                    />
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
+    // }
 }
 
 export default CartItem;
