@@ -2,13 +2,13 @@ import React from "react";
 
 class CartItem extends React.Component {
 
-    increaseQuantity = () => {
+    // increaseQuantity = () => {
         // console.log(this.state.qty+1);
         // form 1
         // this.setState({ qty: this.state.qty + 1 })
         // form 2 for setState
-        this.setState((prevState) => { return { qty: prevState.qty + 1 } })
-    }
+    //     this.setState((prevState) => { return { qty: prevState.qty + 1 } })
+    // }
 
     decreaseQuantity = () => {
         this.setState((prevState) => {
@@ -32,7 +32,7 @@ class CartItem extends React.Component {
                             src="https://cdn-icons-png.flaticon.com/512/9068/9068645.png"
                             alt="increase"
                             className="action-icons"
-                            onClick={this.increaseQuantity}
+                            onClick={() => {this.props.onIncreaseQuantity(this.props.product)}}
                         // onClick={() => { this.setState({ qty: qty + 1 }) }}
                         />
                         <img
