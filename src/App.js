@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, setDoc, onSnapshot } from "firebase/firestore";
 
 // https://firebase.google.com/docs/firestore/quickstart#web-version-9
 // Your web app's Firebase configuration
@@ -26,7 +26,7 @@ class App extends React.Component {
     super();
     this.state = {
       products: [],
-      loading:true
+      loading: true
     }
   }
 
@@ -57,8 +57,30 @@ class App extends React.Component {
 
     this.setState({
       products,
-      loading:false
+      loading: false
     })
+
+    // Attaching the onSnapshot to listen whenever the data changes in firestore
+    const unsubscribe = onSnapshot(
+      collection(db, "products"),
+      { includeMetadataChanges: true },
+      (snapshot) => {
+
+        // Updating the whole products array for single change
+        products = snapshot.docs.map((doc) => {
+          let data = doc.data();
+          data.id = doc.id;
+          return data;
+        })
+
+        // snapshot.docChanges().map((ch) => {
+        //   console.log(ch.doc.data(),"pin point the changes in specific doc");
+        // });
+
+        this.setState({
+          products
+        })
+      });
 
   }
 
