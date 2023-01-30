@@ -2,33 +2,64 @@ import React from "react";
 import Cart from "./Cart";
 import Navbar from "./Navbar";
 
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
+
+// https://firebase.google.com/docs/firestore/quickstart#web-version-9
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBBKDEZ_goJK7c8AWrmdg4znxoRWDCYZd0",
+  authDomain: "cart-5235b.firebaseapp.com",
+  projectId: "cart-5235b",
+  storageBucket: "cart-5235b.appspot.com",
+  messagingSenderId: "567559977084",
+  appId: "1:567559977084:web:7e406701489f59c1fd71f9"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      products: [
-        {
-          id: 1,
-          price: 45,
-          qty: 3,
-          title: "Watch",
-          imgLink: "https://m.media-amazon.com/images/I/71CrNuzQaHL._SX679_.jpg"
-        }, {
-          id: 2,
-          price: 4950,
-          qty: 2,
-          title: "Phone",
-          imgLink: "https://m.media-amazon.com/images/I/41OBf52bnOL._SX300_SY300_QL70_FMwebp_.jpg"
-        }, {
-          id: 3,
-          price: 9945,
-          qty: 1,
-          title: "Wallet",
-          imgLink: "https://m.media-amazon.com/images/I/919V+ZDE2EL._SX679_.jpg"
-        },
-
-      ]
+      products: [],
+      loading:true
     }
+  }
+
+  async componentDidMount() {
+
+    // -----------------------------------------------
+    // Get single doc
+    // const docRef = doc(db, "products", "pl6aa0Bzugza8I6LuLnP");
+    // const docSnap = await getDoc(docRef);
+
+    // if (docSnap.exists()) {
+    //   console.log("Document data:", docSnap.data());
+    // } else {
+    //   // doc.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
+    // -----------------------------------------------
+
+    // Get all docs
+    let products = [];
+    const querySnapshot = await getDocs(collection(db, "products"));
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      let data = doc.data();
+      data.id = doc.id;
+      products.push(data);
+    });
+
+    this.setState({
+      products,
+      loading:false
+    })
+
   }
 
   onIncreaseQuantity = (product) => {
@@ -77,7 +108,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { products } = this.state;
+    const { products, loading } = this.state;
     return (
       <>
         <Navbar count={this.getCartCount()} />
@@ -89,6 +120,7 @@ class App extends React.Component {
             deleteProduct={this.deleteProduct}
           />
         </div>
+        {loading && <h1>Loading your cart !</h1>}
         <div style={{ padding: 10, fontSize: 25 }}>Total : {this.getCartTotal()}</div>
       </>
     );
