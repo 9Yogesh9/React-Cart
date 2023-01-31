@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, collection, getDocs, setDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, setDoc, addDoc, onSnapshot } from "firebase/firestore";
 
 // https://firebase.google.com/docs/firestore/quickstart#web-version-9
 // Your web app's Firebase configuration
@@ -129,11 +129,31 @@ class App extends React.Component {
     return totalAmount;
   }
 
+  addProducts = () => {
+    // Use this function to add the products
+    let obj = [{
+      price: 4950,
+      qty: 2,
+      title: "Phone",
+      imgLink: "https://m.media-amazon.com/images/I/41OBf52bnOL._SX300_SY300_QL70_FMwebp_.jpg"
+    }, {
+      price: 9945,
+      qty: 1,
+      title: "Wallet",
+      imgLink: "https://m.media-amazon.com/images/I/919V+ZDE2EL._SX679_.jpg"
+    }]
+    obj.forEach((pro) =>{
+      addDoc(collection(db, "products"), pro );
+      console.log("added product !")
+    })
+  }
+
   render() {
     const { products, loading } = this.state;
     return (
       <>
         <Navbar count={this.getCartCount()} />
+        {/* <button onClick={this.addProducts}>Add Products</button> */}
         <div className="App">
           <Cart
             products={products}
